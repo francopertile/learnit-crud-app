@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn It, Love It!</title>
+</head>
+<body>
+  <h1>Lista de Temas</h1>
+
+  <% if (temas && temas.length > 0) { %>
+    <ul>
+      <% temas.forEach(t => { %>
+        <li>
+          <strong><%= t.titulo %></strong>
+          <p><%= t.descripcion %></p>
+          <span>Votos: <%= t.votos %></span>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>No hay temas aún. ¡Crea el primero!</p>
+  <% } %>
+</body>
+</html>

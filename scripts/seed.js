@@ -31,4 +31,31 @@ const createTableEnlacesStmt = `
 db.exec(createTableEnlacesStmt);
 console.log('Tabla "enlaces" creada o ya existente.');
 
+
+//modulo3
+
+console.log('Script de inicialización finalizado.');
+
+// (Pega esto al final de tu archivo scripts/seed.js)
+
+console.log('Limpiando datos antiguos...');
+db.exec('DELETE FROM enlaces;');
+db.exec('DELETE FROM temas;');
+db.exec("UPDATE sqlite_sequence SET seq = 0 WHERE name = 'temas';");
+db.exec("UPDATE sqlite_sequence SET seq = 0 WHERE name = 'enlaces';");
+
+console.log('Insertando datos de ejemplo...');
+const insertTemaStmt = db.prepare('INSERT INTO temas (titulo, descripcion) VALUES (?, ?)');
+
+const temasIniciales = [
+  { titulo: 'Node.js y Express', descripcion: 'Configuración y rutas avanzadas.' },
+  { titulo: 'JavaScript Puro', descripcion: 'Interacciones asíncronas con el DOM y fetch.' },
+  { titulo: 'Arquitectura MVC', descripcion: 'Mejores prácticas de separación de código.' }
+];
+
+temasIniciales.forEach(tema => {
+  insertTemaStmt.run(tema.titulo, tema.descripcion);
+});
+
+console.log('Datos de temas de ejemplo insertados.');
 console.log('Script de inicialización finalizado.');
