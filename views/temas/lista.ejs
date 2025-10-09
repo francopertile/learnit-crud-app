@@ -7,7 +7,7 @@
 </head>
 <body>
   <h1>Lista de Temas</h1>
-  
+
   <% if (temas && temas.length > 0) { %>
     <ul>
       <% temas.forEach(t => { %>
@@ -15,13 +15,14 @@
           <strong><%= t.titulo %></strong>
           <p><%= t.descripcion %></p>
           <span>Votos: <%= t.votos %></span>
+          <p><a href="/temas/<%= t.id %>/editar">Editar</a></p>
         </li>
       <% }) %>
     </ul>
   <% } else { %>
     <p>No hay temas aún. ¡Crea el primero!</p>
   <% } %>
-  
+
   <hr>
   <a href="/temas/nuevo">Crear nuevo tema</a>
 

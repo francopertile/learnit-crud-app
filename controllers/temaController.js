@@ -1,6 +1,5 @@
 const temaModel = require('../models/temaModel');
 
-// Muestra la lista de todos los temas
 const obtenerTemas = (req, res) => {
   try {
     const temas = temaModel.obtenerTodos();
@@ -11,27 +10,17 @@ const obtenerTemas = (req, res) => {
   }
 };
 
-// --- NUEVA FUNCIÓN 1 ---
-// Muestra el formulario para crear un nuevo tema
 const formularioNuevoTema = (req, res) => {
-  res.render('temas/nuevo'); // Renderiza una nueva vista que crearemos
+  res.render('temas/nuevo', { error: null });
 };
 
-// --- NUEVA FUNCIÓN 2 ---
-// Procesa el formulario y crea el tema en la BD
 const crearTema = (req, res) => {
-  // 'req.body' contiene los datos del formulario (ej: { titulo: '...', descripcion: '...' })
   const { titulo, descripcion } = req.body;
-
-  // Validación básica
   if (!titulo || titulo.trim() === "") {
-    // Si hay un error, volvemos a mostrar el formulario (más adelante lo mejoraremos)
     return res.render('temas/nuevo', { error: "El título es obligatorio" });
   }
-
   try {
     temaModel.crear({ titulo: titulo.trim(), descripcion: descripcion.trim() });
-    // Si todo va bien, redirigimos al usuario a la lista de temas
     return res.redirect('/temas');
   } catch (err) {
     console.error("crearTema error:", err);
@@ -39,8 +28,43 @@ const crearTema = (req, res) => {
   }
 };
 
+// --- NUEVA FUNCIÓN 1 ---
+// Muestra el formulario para editar un tema específico
+const formularioEditarTema = (req, res) => {
+  const id = req.params.id; // Obtenemos el ID de la URL
+  const tema = temaModel.obtenerPorId(id);
+  if (tema) {
+    res.render('temas/editar', { tema: tema, error: null });
+  } else {
+    res.redirect('/temas'); // Si no se encuentra el tema, redirigimos
+  }
+};
+
+// --- NUEVA FUNCIÓN 2 ---
+// Procesa el formulario de edición
+const actualizarTema = (req, res) => {
+  const id = req.params.id;
+  const { titulo, descripcion } = req.body;
+
+  if (!titulo || titulo.trim() === "") {
+    const tema = temaModel.obtenerPorId(id);
+    return res.render('temas/editar', { tema: tema, error: "El título es obligatorio" });
+  }
+
+  try {
+    temaModel.actualizar(id, { titulo: titulo.trim(), descripcion: descripcion.trim() });
+    res.redirect('/temas');
+  } catch (err) {
+    console.error("actualizarTema error:", err);
+    const tema = temaModel.obtenerPorId(id);
+    return res.render('temas/editar', { tema: tema, error: "No se pudo actualizar el tema." });
+  }
+};
+
 module.exports = {
   obtenerTemas,
-  formularioNuevoTema, // <-- Exportamos las nuevas funciones
-  crearTema
+  formularioNuevoTema,
+  crearTema,
+  formularioEditarTema, // <-- Exportamos las nuevas funciones
+  actualizarTema
 };

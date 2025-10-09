@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Tema: <%= tema.titulo %></title>
+</head>
+<body>
+  <h1>Editar Tema</h1>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <p style="color:red"><%= error %></p>
+  <% } %>
+
+  <form action="/temas/<%= tema.id %>/editar" method="POST">
+    <div>
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo" value="<%= tema.titulo %>" required>
+    </div>
+    <br>
+    <div>
+      <label for="descripcion">Descripción:</label>
+      <textarea id="descripcion" name="descripcion"><%= tema.descripcion %></textarea>
+    </div>
+    <br>
+    <button type="submit">Guardar Cambios</button>
+  </form>
+  <br>
+  <a href="/temas">Cancelar y volver a la lista</a>
+</body>
+</html>

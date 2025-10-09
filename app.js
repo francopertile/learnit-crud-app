@@ -24,4 +24,4 @@ app.get('/', (req, res) => {
 // 6. Servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}/temas`);
-});
+})
