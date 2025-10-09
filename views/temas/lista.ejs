@@ -7,7 +7,7 @@
 </head>
 <body>
   <h1>Lista de Temas</h1>
-
+  
   <% if (temas && temas.length > 0) { %>
     <ul>
       <% temas.forEach(t => { %>
@@ -21,5 +21,9 @@
   <% } else { %>
     <p>No hay temas aún. ¡Crea el primero!</p>
   <% } %>
+  
+  <hr>
+  <a href="/temas/nuevo">Crear nuevo tema</a>
+
 </body>
 </html>

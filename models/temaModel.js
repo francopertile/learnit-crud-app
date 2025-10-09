@@ -1,6 +1,6 @@
 const db = require('../db'); // Importamos nuestra conexión a la BD
 
-// Función para obtener todos los temas, ordenados por votos (aunque aún no los usamos)
+// Función para obtener todos los temas
 const obtenerTodos = () => {
   const stmt = db.prepare('SELECT * FROM temas ORDER BY votos DESC, created_at DESC');
   return stmt.all();
@@ -12,8 +12,19 @@ const obtenerPorId = (id) => {
   return stmt.get(id);
 };
 
-// Exportamos las funciones para poder usarlas en otros archivos
+// --- NUEVA FUNCIÓN ---
+// Función para crear un nuevo tema
+const crear = (nuevoTema) => {
+  const stmt = db.prepare(
+    'INSERT INTO temas (titulo, descripcion) VALUES (?, ?)'
+  );
+  const info = stmt.run(nuevoTema.titulo, nuevoTema.descripcion);
+  return obtenerPorId(info.lastInsertRowid); // Devolvemos el tema recién creado
+};
+
+// Exportamos las funciones
 module.exports = {
   obtenerTodos,
-  obtenerPorId
+  obtenerPorId,
+  crear // <-- No olvides exportar la nueva función
 };

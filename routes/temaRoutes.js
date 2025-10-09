@@ -1,8 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { obtenerTemas } = require('../controllers/temaController');
+// Importamos las nuevas funciones del controlador
+const { obtenerTemas, formularioNuevoTema, crearTema } = require('../controllers/temaController');
 
-// Cuando se haga una petición GET a /temas, se ejecutará la función obtenerTemas
+// Muestra la lista de temas
 router.get('/temas', obtenerTemas);
+
+// --- NUEVAS RUTAS ---
+// Muestra el formulario para crear un nuevo tema
+router.get('/temas/nuevo', formularioNuevoTema);
+
+// Procesa el formulario enviado con método POST
+router.post('/temas', crearTema);
 
 module.exports = router;

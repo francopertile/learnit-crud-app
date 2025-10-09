@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Nuevo Tema</title>
+</head>
+<body>
+  <h1>Crear un Nuevo Tema</h1>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <p style="color:red"><%= error %></p>
+  <% } %>
+
+  <form action="/temas" method="POST">
+    <div>
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo" required>
+    </div>
+    <br>
+    <div>
+      <label for="descripcion">Descripción:</label>
+      <textarea id="descripcion" name="descripcion"></textarea>
+    </div>
+    <br>
+    <button type="submit">Crear Tema</button>
+  </form>
+  <br>
+  <a href="/temas">Cancelar y volver a la lista</a>
+</body>
+</html>
