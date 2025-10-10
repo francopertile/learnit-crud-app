@@ -4,8 +4,9 @@ const {
   obtenerTemas, 
   formularioNuevoTema, 
   crearTema,
-  formularioEditarTema, // <-- Importamos las nuevas funciones
-  actualizarTema 
+  formularioEditarTema,
+  actualizarTema,
+  eliminarTema // <-- Importamos la nueva función
 } = require('../controllers/temaController');
 
 // Muestra la lista de temas
@@ -17,11 +18,14 @@ router.get('/temas/nuevo', formularioNuevoTema);
 // Procesa el formulario de creación
 router.post('/temas', crearTema);
 
-// --- NUEVAS RUTAS ---
-// Muestra el formulario para editar un tema. :id es un parámetro dinámico.
+// Muestra el formulario para editar un tema
 router.get('/temas/:id/editar', formularioEditarTema);
 
 // Procesa el formulario de edición
 router.post('/temas/:id/editar', actualizarTema);
+
+// --- NUEVA RUTA ---
+// Procesa la eliminación de un tema
+router.post('/temas/:id/eliminar', eliminarTema);
 
 module.exports = router;

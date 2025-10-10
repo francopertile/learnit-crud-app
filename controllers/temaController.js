@@ -28,29 +28,23 @@ const crearTema = (req, res) => {
   }
 };
 
-// --- NUEVA FUNCIÓN 1 ---
-// Muestra el formulario para editar un tema específico
 const formularioEditarTema = (req, res) => {
-  const id = req.params.id; // Obtenemos el ID de la URL
+  const id = req.params.id;
   const tema = temaModel.obtenerPorId(id);
   if (tema) {
     res.render('temas/editar', { tema: tema, error: null });
   } else {
-    res.redirect('/temas'); // Si no se encuentra el tema, redirigimos
+    res.redirect('/temas');
   }
 };
 
-// --- NUEVA FUNCIÓN 2 ---
-// Procesa el formulario de edición
 const actualizarTema = (req, res) => {
   const id = req.params.id;
   const { titulo, descripcion } = req.body;
-
   if (!titulo || titulo.trim() === "") {
     const tema = temaModel.obtenerPorId(id);
     return res.render('temas/editar', { tema: tema, error: "El título es obligatorio" });
   }
-
   try {
     temaModel.actualizar(id, { titulo: titulo.trim(), descripcion: descripcion.trim() });
     res.redirect('/temas');
@@ -61,10 +55,24 @@ const actualizarTema = (req, res) => {
   }
 };
 
+// --- NUEVA FUNCIÓN ---
+// Procesa la eliminación de un tema
+const eliminarTema = (req, res) => {
+  const id = req.params.id;
+  try {
+    temaModel.eliminar(id);
+    res.redirect('/temas');
+  } catch (err) {
+    console.error("eliminarTema error:", err);
+    res.redirect('/temas?error=No se pudo eliminar el tema'); // (Mejoraremos esto)
+  }
+};
+
 module.exports = {
   obtenerTemas,
   formularioNuevoTema,
   crearTema,
-  formularioEditarTema, // <-- Exportamos las nuevas funciones
-  actualizarTema
+  formularioEditarTema,
+  actualizarTema,
+  eliminarTema // <-- Exportamos la nueva función
 };

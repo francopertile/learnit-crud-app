@@ -21,7 +21,6 @@ const crear = (nuevoTema) => {
   return obtenerPorId(info.lastInsertRowid);
 };
 
-// --- NUEVA FUNCIÓN ---
 // Función para actualizar un tema
 const actualizar = (id, datosActualizados) => {
   const stmt = db.prepare(
@@ -31,11 +30,19 @@ const actualizar = (id, datosActualizados) => {
   return info.changes > 0 ? obtenerPorId(id) : null;
 };
 
+// --- NUEVA FUNCIÓN ---
+// Función para eliminar un tema
+const eliminar = (id) => {
+  const stmt = db.prepare('DELETE FROM temas WHERE id = ?');
+  const info = stmt.run(id);
+  return info.changes > 0; // Devuelve true si se eliminó una fila, false si no
+};
 
 // Exportamos las funciones
 module.exports = {
   obtenerTodos,
   obtenerPorId,
   crear,
-  actualizar // <-- No olvides exportar la nueva función
+  actualizar,
+  eliminar // <-- No olvides exportar la nueva función
 };
