@@ -12,7 +12,7 @@
     <ul>
       <% temas.forEach(t => { %>
         <li>
-          <strong><%= t.titulo %></strong>
+          <strong><a href="/temas/<%= t.id %>"><%= t.titulo %></a></strong>
           <p><%= t.descripcion %></p>
           <span>Votos: <%= t.votos %></span>
           <p>

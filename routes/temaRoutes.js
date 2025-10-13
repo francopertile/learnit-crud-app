@@ -1,31 +1,32 @@
 const express = require('express');
 const router = express.Router();
+
+// LÍNEA CORREGIDA: Faltaban varias funciones en la importación
 const { 
-  obtenerTemas, 
-  formularioNuevoTema, 
+  obtenerTemas,
+  formularioNuevoTema,
   crearTema,
   formularioEditarTema,
   actualizarTema,
-  eliminarTema // <-- Importamos la nueva función
+  eliminarTema,
+  getDetalleTema
 } = require('../controllers/temaController');
 
-// Muestra la lista de temas
+// Importamos el controlador de enlaces
+const { postCrearEnlace } = require('../controllers/enlaceController');
+
+// --- RUTAS DE TEMAS ---
 router.get('/temas', obtenerTemas);
-
-// Muestra el formulario para crear un nuevo tema
 router.get('/temas/nuevo', formularioNuevoTema);
-
-// Procesa el formulario de creación
 router.post('/temas', crearTema);
 
-// Muestra el formulario para editar un tema
+// Ruta de detalle, ANTES de las rutas con /editar para evitar conflictos
+router.get('/temas/:id', getDetalleTema); 
+router.post('/temas/:id/enlaces', postCrearEnlace); // Ruta para crear enlaces
+
+// --- RUTAS DE EDICIÓN Y ELIMINACIÓN ---
 router.get('/temas/:id/editar', formularioEditarTema);
-
-// Procesa el formulario de edición
 router.post('/temas/:id/editar', actualizarTema);
-
-// --- NUEVA RUTA ---
-// Procesa la eliminación de un tema
 router.post('/temas/:id/eliminar', eliminarTema);
 
 module.exports = router;

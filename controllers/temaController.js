@@ -1,71 +1,39 @@
 const temaModel = require('../models/temaModel');
+const enlaceModel = require('../models/enlaceModel'); // <-- Importamos el nuevo modelo
 
 const obtenerTemas = (req, res) => {
-  try {
-    const temas = temaModel.obtenerTodos();
-    res.render('temas/lista', { temas: temas, ok: "", error: "" });
-  } catch (err) {
-    console.error("Error en obtenerTemas:", err);
-    res.render('temas/lista', { temas: [], ok: "", error: "No se pudo cargar la lista de temas" });
-  }
+  // ... (código existente, sin cambios)
 };
-
 const formularioNuevoTema = (req, res) => {
-  res.render('temas/nuevo', { error: null });
+  // ... (código existente, sin cambios)
 };
-
 const crearTema = (req, res) => {
-  const { titulo, descripcion } = req.body;
-  if (!titulo || titulo.trim() === "") {
-    return res.render('temas/nuevo', { error: "El título es obligatorio" });
-  }
-  try {
-    temaModel.crear({ titulo: titulo.trim(), descripcion: descripcion.trim() });
-    return res.redirect('/temas');
-  } catch (err) {
-    console.error("crearTema error:", err);
-    return res.render('temas/nuevo', { error: "No se pudo crear el tema." });
-  }
+  // ... (código existente, sin cambios)
 };
-
 const formularioEditarTema = (req, res) => {
-  const id = req.params.id;
-  const tema = temaModel.obtenerPorId(id);
-  if (tema) {
-    res.render('temas/editar', { tema: tema, error: null });
-  } else {
-    res.redirect('/temas');
-  }
+  // ... (código existente, sin cambios)
 };
-
 const actualizarTema = (req, res) => {
-  const id = req.params.id;
-  const { titulo, descripcion } = req.body;
-  if (!titulo || titulo.trim() === "") {
-    const tema = temaModel.obtenerPorId(id);
-    return res.render('temas/editar', { tema: tema, error: "El título es obligatorio" });
-  }
-  try {
-    temaModel.actualizar(id, { titulo: titulo.trim(), descripcion: descripcion.trim() });
-    res.redirect('/temas');
-  } catch (err) {
-    console.error("actualizarTema error:", err);
-    const tema = temaModel.obtenerPorId(id);
-    return res.render('temas/editar', { tema: tema, error: "No se pudo actualizar el tema." });
-  }
+  // ... (código existente, sin cambios)
+};
+const eliminarTema = (req, res) => {
+  // ... (código existente, sin cambios)
 };
 
 // --- NUEVA FUNCIÓN ---
-// Procesa la eliminación de un tema
-const eliminarTema = (req, res) => {
+// Muestra la página de detalle de un tema y sus enlaces
+const getDetalleTema = (req, res) => {
   const id = req.params.id;
-  try {
-    temaModel.eliminar(id);
-    res.redirect('/temas');
-  } catch (err) {
-    console.error("eliminarTema error:", err);
-    res.redirect('/temas?error=No se pudo eliminar el tema'); // (Mejoraremos esto)
+  const tema = temaModel.obtenerPorId(id);
+
+  if (!tema) {
+    return res.redirect('/temas?error=Tema no encontrado');
   }
+
+  const enlaces = enlaceModel.obtenerPorTema(id);
+
+  // Renderiza una nueva vista 'detalle.ejs'
+  res.render('temas/detalle', { tema, enlaces, error: null });
 };
 
 module.exports = {
@@ -74,5 +42,6 @@ module.exports = {
   crearTema,
   formularioEditarTema,
   actualizarTema,
-  eliminarTema // <-- Exportamos la nueva función
+  eliminarTema,
+  getDetalleTema // <-- Exportamos la nueva función
 };
