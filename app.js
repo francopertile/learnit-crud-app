@@ -14,6 +14,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 // 4. Middlewares
 app.use(express.urlencoded({ extended: true }));
+// --- NUEVA LÍNEA ---
+// Sirve archivos estáticos (CSS, JS, imágenes) desde la carpeta 'public'
+app.use(express.static(path.join(__dirname, 'public')));
 
 // 5. Rutas
 app.use(temaRoutes);

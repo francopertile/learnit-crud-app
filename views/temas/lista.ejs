@@ -4,22 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learn It, Love It!</title>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   <h1>Lista de Temas</h1>
 
   <% if (temas && temas.length > 0) { %>
-    <ul>
+    <ul id="lista-temas">
       <% temas.forEach(t => { %>
-        <li>
+        <li class="tema" data-id="<%= t.id %>">
           <strong><a href="/temas/<%= t.id %>"><%= t.titulo %></a></strong>
           <p><%= t.descripcion %></p>
-          <span>Votos: <%= t.votos %></span>
+          <span>Votos: <span class="votos"><%= t.votos %></span></span>
           <p>
             <a href="/temas/<%= t.id %>/editar">Editar</a>
           </p>
           <form action="/temas/<%= t.id %>/eliminar" method="POST" style="display:inline;">
             <button type="submit">Eliminar</button>
+          </form>
+          <form method="POST" action="/temas/<%= t.id %>/votar" class="form-votar-tema" data-id="<%= t.id %>" style="display:inline;">
+            <button type="submit" class="btn-votar-tema">Votar Tema</button>
           </form>
         </li>
       <% }) %>
@@ -31,5 +35,7 @@
   <hr>
   <a href="/temas/nuevo">Crear nuevo tema</a>
 
+  <script type="module" src="/js/utilidades.js"></script>
+  <script type="module" src="/js/temasAjax.js"></script>
 </body>
 </html>

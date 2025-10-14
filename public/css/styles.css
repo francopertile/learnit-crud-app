@@ -1,0 +1,58 @@
+/* Estilos Generales */
+body {
+  font-family: sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  line-height: 1.6;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #2c3e50;
+}
+
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+button, a[href*="nuevo"] {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+form {
+  margin-top: 5px;
+}
+
+/* --- CLASE PARA EL RESALTADO --- */
+/* Define un fondo suave y una transición para el efecto visual */
+.highlight {
+  transition: background-color 0.5s ease;
+  background-color: #e8f6fd !important; /* Un azul muy claro */
+}
