@@ -1,11 +1,22 @@
 const enlaceModel = require('../models/enlaceModel');
 
 function postCrearEnlace(req, res) {
-  // ... (código existente, sin cambios)
+  const temaId = req.params.id;
+  const { titulo = "", url = "", descripcion = "" } = req.body;
+
+  if (titulo.trim() === "" || url.trim() === "") {
+    return res.redirect(`/temas/${temaId}?error=El título y la URL son obligatorios`);
+  }
+
+  try {
+    enlaceModel.crear({ tema_id: temaId, titulo, url, descripcion });
+    return res.redirect(`/temas/${temaId}`);
+  } catch (err) {
+    console.error("postCrearEnlace error:", err);
+    return res.redirect(`/temas/${temaId}?error=No se pudo crear el enlace`);
+  }
 }
 
-// --- NUEVA FUNCIÓN 1 ---
-// Muestra el formulario para editar un enlace
 function getFormEditarEnlace(req, res) {
   const id = req.params.id;
   const enlace = enlaceModel.obtenerPorId(id);
@@ -18,8 +29,6 @@ function getFormEditarEnlace(req, res) {
   });
 }
 
-// --- NUEVA FUNCIÓN 2 ---
-// Procesa la edición de un enlace
 function postEditarEnlace(req, res) {
   const id = req.params.id;
   const { titulo, url, descripcion } = req.body;
@@ -43,8 +52,6 @@ function postEditarEnlace(req, res) {
   }
 }
 
-// --- NUEVA FUNCIÓN 3 ---
-// Procesa la eliminación de un enlace
 function postEliminarEnlace(req, res) {
   const id = req.params.id;
   const enlace = enlaceModel.obtenerPorId(id);
@@ -56,9 +63,25 @@ function postEliminarEnlace(req, res) {
   return res.redirect(`/temas/${temaId}`);
 }
 
+function postVotarEnlace(req, res) {
+  const id = req.params.id;
+  try {
+    const actualizado = enlaceModel.votar(id);
+    if (actualizado) {
+      return res.json({ ok: true, enlace: actualizado });
+    } else {
+      return res.status(404).json({ ok: false, error: 'Enlace no encontrado' });
+    }
+  } catch (err) {
+    console.error("postVotarEnlace error:", err);
+    return res.status(500).json({ ok: false, error: 'Error al votar' });
+  }
+}
+
 module.exports = {
   postCrearEnlace,
   getFormEditarEnlace,
   postEditarEnlace,
-  postEliminarEnlace
+  postEliminarEnlace,
+  postVotarEnlace
 };

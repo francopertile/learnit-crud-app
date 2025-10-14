@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const temaRoutes = require('./routes/temaRoutes');
-const enlaceRoutes = require('./routes/enlaceRoutes'); // <-- NUEVA IMPORTACIÓN
+const enlaceRoutes = require('./routes/enlaceRoutes');
 
 // 2. Inicialización
 const app = express();
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // 5. Rutas
 app.use(temaRoutes);
-app.use(enlaceRoutes); // <-- USAMOS LAS NUEVAS RUTAS
+app.use(enlaceRoutes);
 app.get('/', (req, res) => {
   res.redirect('/temas');
 });

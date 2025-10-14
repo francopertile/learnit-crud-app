@@ -1,18 +1,15 @@
 const db = require('../db');
 
-// Función para obtener todos los enlaces de un tema específico
 const obtenerPorTema = (temaId) => {
   const stmt = db.prepare('SELECT * FROM enlaces WHERE tema_id = ? ORDER BY votos DESC, id DESC');
   return stmt.all(temaId);
 };
 
-// Función para obtener un enlace por su ID
 const obtenerPorId = (id) => {
   const stmt = db.prepare('SELECT * FROM enlaces WHERE id = ?');
   return stmt.get(id) || null;
 };
 
-// Función para crear un nuevo enlace
 const crear = ({ tema_id, titulo, url, descripcion = '' }) => {
   if (!titulo || !url) return null;
   const stmt = db.prepare(
@@ -22,8 +19,6 @@ const crear = ({ tema_id, titulo, url, descripcion = '' }) => {
   return obtenerPorId(info.lastInsertRowid);
 };
 
-// --- NUEVA FUNCIÓN 1 ---
-// Función para actualizar un enlace
 const actualizar = (id, { titulo, url, descripcion = '' }) => {
   if (!titulo || !url) return null;
   const stmt = db.prepare(
@@ -33,19 +28,25 @@ const actualizar = (id, { titulo, url, descripcion = '' }) => {
   return info.changes > 0 ? obtenerPorId(id) : null;
 };
 
-// --- NUEVA FUNCIÓN 2 ---
-// Función para eliminar un enlace
 const eliminar = (id) => {
   const stmt = db.prepare('DELETE FROM enlaces WHERE id = ?');
   const info = stmt.run(id);
   return info.changes > 0;
 };
 
-// Exportamos las funciones
+// --- NUEVA FUNCIÓN ---
+// Incrementa los votos de un enlace en 1
+const votar = (id) => {
+  const stmt = db.prepare('UPDATE enlaces SET votos = votos + 1 WHERE id = ?');
+  const info = stmt.run(id);
+  return info.changes > 0 ? obtenerPorId(id) : null;
+};
+
 module.exports = {
   obtenerPorTema,
   obtenerPorId,
   crear,
   actualizar,
   eliminar,
+  votar, // <-- Exportamos la nueva función
 };

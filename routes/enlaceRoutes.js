@@ -3,14 +3,13 @@ const router = express.Router();
 const {
   getFormEditarEnlace,
   postEditarEnlace,
-  postEliminarEnlace
+  postEliminarEnlace,
+  postVotarEnlace
 } = require('../controllers/enlaceController');
 
-// Rutas para editar un enlace
 router.get('/enlaces/:id/editar', getFormEditarEnlace);
 router.post('/enlaces/:id/editar', postEditarEnlace);
-
-// Ruta para eliminar un enlace
 router.post('/enlaces/:id/eliminar', postEliminarEnlace);
+router.post('/enlaces/:id/votar', postVotarEnlace);
 
 module.exports = router;
