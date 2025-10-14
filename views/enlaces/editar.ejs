@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Enlace</title>
+</head>
+<body>
+  <h1>Editar Enlace</h1>
+  <% if (error) { %>
+    <p style="color:red"><%= error %></p>
+  <% } %>
+  <form method="POST" action="/enlaces/<%= enlace.id %>/editar">
+    <fieldset>
+      <label>Título
+        <input type="text" name="titulo" value="<%= enlace.titulo %>" required />
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>URL
+        <input type="url" name="url" value="<%= enlace.url %>" required />
+      </label>
+    </fieldset>
+    <fieldset>
+      <label>Descripción
+        <textarea name="descripcion"><%= enlace.descripcion %></textarea>
+      </label>
+    </fieldset>
+    <button type="submit">Guardar Cambios</button>
+    <a href="/temas/<%= enlace.tema_id %>">Cancelar</a>
+  </form>
+</body>
+</html>

@@ -8,16 +8,10 @@
   <h1><%= tema.titulo %></h1>
   <p><b>Descripción:</b> <%= tema.descripcion %></p>
   <p><b>Votos:</b> <%= tema.votos %></p>
-
   <hr>
   <h2>Agregar Nuevo Enlace</h2>
   <form method="POST" action="/temas/<%= tema.id %>/enlaces">
-    <input type="text" name="titulo" placeholder="Título del Enlace" required>
-    <input type="url" name="url" placeholder="https://ejemplo.com" required>
-    <textarea name="descripcion" placeholder="Descripción (opcional)"></textarea>
-    <button type="submit">Agregar Enlace</button>
-  </form>
-
+    </form>
   <hr>
   <h2>Enlaces Asociados</h2>
   <% if (enlaces.length > 0) { %>
@@ -27,13 +21,18 @@
           <strong><a href="<%= e.url %>" target="_blank"><%= e.titulo %></a></strong>
           <p><%= e.descripcion %></p>
           <span>Votos: <%= e.votos %></span>
+          <div>
+            <a href="/enlaces/<%= e.id %>/editar">Editar</a>
+            <form method="POST" action="/enlaces/<%= e.id %>/eliminar" style="display:inline;">
+              <button type="submit">Eliminar</button>
+            </form>
+          </div>
         </li>
       <% }) %>
     </ul>
   <% } else { %>
     <p>Este tema aún no tiene enlaces.</p>
   <% } %>
-
   <br>
   <a href="/temas">Volver al listado de temas</a>
 </body>

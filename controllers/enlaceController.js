@@ -1,25 +1,64 @@
 const enlaceModel = require('../models/enlaceModel');
 
-// Procesa el formulario para crear un nuevo enlace
 function postCrearEnlace(req, res) {
-  const temaId = req.params.id; // El ID del tema viene de la URL
-  const { titulo = "", url = "", descripcion = "" } = req.body;
+  // ... (código existente, sin cambios)
+}
 
-  // Validación
-  if (titulo.trim() === "" || url.trim() === "") {
-    // (Mejoraremos el manejo de errores más adelante)
-    return res.redirect(`/temas/${temaId}?error=El título y la URL son obligatorios`);
+// --- NUEVA FUNCIÓN 1 ---
+// Muestra el formulario para editar un enlace
+function getFormEditarEnlace(req, res) {
+  const id = req.params.id;
+  const enlace = enlaceModel.obtenerPorId(id);
+  if (!enlace) {
+    return res.redirect('/temas?error=Enlace no encontrado');
   }
+  res.render('enlaces/editar', {
+    enlace: enlace,
+    error: null
+  });
+}
 
+// --- NUEVA FUNCIÓN 2 ---
+// Procesa la edición de un enlace
+function postEditarEnlace(req, res) {
+  const id = req.params.id;
+  const { titulo, url, descripcion } = req.body;
+  const enlaceOriginal = enlaceModel.obtenerPorId(id);
+
+  if (!titulo || titulo.trim() === "" || !url || url.trim() === "") {
+    return res.render('enlaces/editar', {
+      enlace: enlaceOriginal,
+      error: "El título y la URL son obligatorios"
+    });
+  }
   try {
-    enlaceModel.crear({ tema_id: temaId, titulo, url, descripcion });
-    return res.redirect(`/temas/${temaId}`); // Redirige de vuelta a la página de detalle
+    const actualizado = enlaceModel.actualizar(id, { titulo, url, descripcion });
+    return res.redirect(`/temas/${actualizado.tema_id}`);
   } catch (err) {
-    console.error("postCrearEnlace error:", err);
-    return res.redirect(`/temas/${temaId}?error=No se pudo crear el enlace`);
+    console.error("postEditarEnlace error:", err);
+    return res.render('enlaces/editar', {
+      enlace: enlaceOriginal,
+      error: "No se pudo actualizar el enlace"
+    });
   }
 }
 
+// --- NUEVA FUNCIÓN 3 ---
+// Procesa la eliminación de un enlace
+function postEliminarEnlace(req, res) {
+  const id = req.params.id;
+  const enlace = enlaceModel.obtenerPorId(id);
+  if (!enlace) {
+    return res.redirect('/temas?error=Enlace no encontrado');
+  }
+  const temaId = enlace.tema_id;
+  enlaceModel.eliminar(id);
+  return res.redirect(`/temas/${temaId}`);
+}
+
 module.exports = {
-  postCrearEnlace
+  postCrearEnlace,
+  getFormEditarEnlace,
+  postEditarEnlace,
+  postEliminarEnlace
 };

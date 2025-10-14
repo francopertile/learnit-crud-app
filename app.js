@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const temaRoutes = require('./routes/temaRoutes');
+const enlaceRoutes = require('./routes/enlaceRoutes'); // <-- NUEVA IMPORTACIÓN
 
 // 2. Inicialización
 const app = express();
@@ -11,12 +12,12 @@ const PORT = 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// --- NUEVO: MIDDLEWARES ---
-// Este middleware es CRUCIAL para poder leer los datos de un formulario
+// 4. Middlewares
 app.use(express.urlencoded({ extended: true }));
 
 // 5. Rutas
 app.use(temaRoutes);
+app.use(enlaceRoutes); // <-- USAMOS LAS NUEVAS RUTAS
 app.get('/', (req, res) => {
   res.redirect('/temas');
 });
@@ -24,4 +25,4 @@ app.get('/', (req, res) => {
 // 6. Servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}/temas`);
-})
+});
